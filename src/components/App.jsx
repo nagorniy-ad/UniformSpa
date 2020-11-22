@@ -1,19 +1,19 @@
-import React, { Component } from "react";
+import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { hot } from "react-hot-loader";
+import { hot } from 'react-hot-loader';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import FormPage from "./FormPage";
-import SearchPage from "./SearchPage";
-import MessagePage from "./MessagePage";
+import FormPage from './pages/FormPage';
+import SearchPage from './pages/SearchPage';
+import NotFoundPage from './pages/NotFoundPage';
 
-class App extends Component {
+class App extends React.Component {
   render() {
     return (
       <BrowserRouter>
         <Switch>
           <Route exact path="/" component={FormPage} />
           <Route path="/search" component={SearchPage} />
-          <Route render={props => (<MessagePage {...props} message="Страница не найдена." />)} />
+          <Route render={props => (<NotFoundPage {...props} />)} />
         </Switch>
       </BrowserRouter>
     );

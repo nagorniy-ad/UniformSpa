@@ -4,9 +4,18 @@ class Message extends Component {
 
     render() {
         return (
-            <div>
-                <h1 className="text-center p-4 display-4">{this.props.message}</h1>
-                <h2>{this.props.details}</h2>
+            <div className="d-flex justify-content-center align-items-center vw-100 vh-100">
+                <div className="w-50 h-75">
+                    <h1 className={`display-4 p-4 mb-4 alert alert-${this.props.type}`}>
+                        {this.props.title}
+                    </h1>
+                    <p className="lead mb-4">
+                        {this.props.message}
+                    </p>
+                    <div className="list-group list-group-flush">
+                        {this.props.children}
+                    </div>
+                </div>
             </div>
         );
     }
