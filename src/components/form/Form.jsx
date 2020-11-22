@@ -5,12 +5,14 @@ import Radio from './Radio';
 import Select from './Select';
 import TextArea from './TextArea';
 import UniformConnector from '../../connectors/UniformConnector';
+import Loader from '../Loader';
 
 class Form extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            loading: false,
             form: {
                 name: '',
                 sex: '',
@@ -39,6 +41,7 @@ class Form extends React.Component {
             return;
         }
         let connector = new UniformConnector();
+        this.setState({ loading: true });
         connector
             .sendForm(this.state.form)
             .then(() => this.props.handleOnSubmit({ success: true }))
@@ -61,6 +64,9 @@ class Form extends React.Component {
     }
 
     render() {
+        if (this.state.loading === true) {
+            return <Loader />;
+        }
         return (
             <form noValidate onSubmit={this.handleOnSubmit}>
                 <h1 className="display-4">Анкета</h1>

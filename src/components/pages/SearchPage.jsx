@@ -3,12 +3,14 @@ import UniformConnector from "../../connectors/UniformConnector";
 import FieldMapper from "../../mappers/FieldMapper";
 import { Link } from 'react-router-dom';
 import { Check2Square } from 'react-bootstrap-icons';
+import Loader from '../Loader';
 
 class SearchPage extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            loading: false,
             query: '',
             result: null
         };
@@ -25,10 +27,12 @@ class SearchPage extends Component {
     handleSubmit(event) {
         event.preventDefault();
         let connector = new UniformConnector();
+        this.setState({ loading: true });
         connector
             .searchForm(this.state.query)
             .then(data => this.setState({ result: { success: true, data: data } }))
-            .catch(e => this.setState({ result: { success: false, error: e } }));
+            .catch(e => this.setState({ result: { success: false, error: e } }))
+            .finally(() => this.setState({ loading: false }));
     }
 
     renderSuccess() {
@@ -70,10 +74,18 @@ class SearchPage extends Component {
     }
 
     render() {
-        const resultView = this.state.result ?
-            this.state.result.success ?
-                this.renderSuccess() : this.renderError()
-            : "";
+        const resultView = () => {
+            if (this.state.loading === true) {
+                return <Loader />
+            }
+            if (this.state.result) {
+                return this.state.result.success ?
+                    this.renderSuccess() : this.renderError();
+            }
+            else {
+                return "";
+            }
+        }
         return (
             <div>
                 <form className="d-flex justify-content-center m-4" onSubmit={this.handleSubmit}>
@@ -84,7 +96,7 @@ class SearchPage extends Component {
                         </div>
                     </div>
                 </form>
-                {resultView}
+                {resultView()}
                 <Link to="/">
                     <button className="btn btn-link fixed-bottom m-4">
                         <Check2Square size="32" />
